@@ -1,231 +1,230 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Popup Canarias</title>
-    <style>
-        /* Overlay del popup */
-        #canarias-popup {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-        }
-        /* Contenedor principal */
-        #canarias-popup .popup-content {
-            background: #fff;
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        /* Título */
-        #canarias-popup .popup-content h2 {
-            color: #FFA500;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        /* Subtítulo */
-        #canarias-popup .popup-content p {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-        /* Contenedor azul */
-        #canarias-popup .blue-box {
-            background: #00AEEF;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        /* Mensajes */
-        .message-box {
-            display: none;
-            padding: 10px;
-            margin-top: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            text-align: center;
-        }
-        .error-message {
-            background-color: #ffcccc;
-            color: #cc0000;
-        }
-        .success-message {
-            background-color: #ccffcc;
-            color: #008000;
-        }
-        /* Input de correo */
-        #canarias-popup .blue-box input[type="email"] {
-            padding: 10px;
-            width: 80%;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        /* Opciones */
-        #canarias-popup .cameras-question {
-            color: #fff;
-            font-weight: bold;
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        #canarias-popup .options {
-            display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
-        }
-        #canarias-popup .options label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            color: #fff;
-            font-size: 14px;
-        }
-        /* Checkbox */
-        #canarias-popup .options input[type="checkbox"] {
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            margin-top: 5px;
-            cursor: pointer;
-            border: 2px solid #FFA500;
-            border-radius: 50%;
-            background: transparent;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        #canarias-popup .options input[type="checkbox"]:checked {
-            background: #FFA500;
-            border-color: #FFA500;
-        }
-        /* Checkbox de términos */
-        .terms-container {
-            margin-top: 15px;
-            text-align: center;
-            font-size: 14px;
-        }
-        .terms-container a {
-            color: #FFA500;
-            text-decoration: underline;
-        }
-        /* Botón */
-        #canarias-popup .blue-box button {
-            background: #FFA500;
-            color: #fff;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #canarias-popup .blue-box button:hover {
-            background: #FF8C00;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Popup Canarias</title>
+  <style>
+/* Estilos generales */
+#canarias-popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
+
+#canarias-popup .popup-content {
+  background: white;
+  color: black;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Contenedor azul dentro del recuadro blanco */
+.blue-box {
+  background: #008CDE;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 15px;
+}
+
+/* Input de correo */
+#canarias-popup input[type="email"] {
+  width: 90%;
+  padding: 12px;
+  border-radius: 20px;
+  border: none;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Pregunta de cámaras */
+.cameras-question {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px 0;
+  color: white;
+}
+
+/* Contenedor de opciones */
+.options {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Estilos de opciones de selección */
+.options label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Checkboxes personalizados */
+.options input[type="checkbox"] {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-top: 5px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Checkboxes seleccionados */
+.options input[type="checkbox"]:checked {
+  background-color: #FFA500;
+  border-color: #FFA500;
+}
+
+/* Checkbox de términos y condiciones */
+.terms-container {
+  font-size: 14px;
+  margin-top: 10px;
+  color: white;
+}
+.terms-container a {
+  color: #FFA500;
+  text-decoration: underline;
+}
+
+/* Botón de envío */
+#canarias-popup button {
+  background: #FFA500;
+  color: white;
+  border: none;
+  padding: 12px 40px;
+  font-size: 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+#canarias-popup button:hover {
+  background: #FF8C00;
+}
+
+/* Logo de Canarias Life */
+.canarias-logo {
+  margin-top: 20px;
+}
+
+.canarias-logo img {
+  width: 150px;
+}
+
+  </style>
 </head>
 <body>
 
-    <button id="open-popup-btn" onclick="openPopup()">Forzar Popup</button>
+  <button id="open-popup-btn" onclick="openPopup()">Forzar Popup</button>
 
-    <div id="canarias-popup">
-      <div class="popup-content">
-        <h2>ASÓMATE A LA VENTANA DE CANARIAS</h2>
-        <p>Mantente al día con tus cámaras favoritas y recibe un aviso todas las semanas</p>
-        <div class="blue-box">
-          <form id="canarias-form">
-            <input type="email" id="email" name="email" placeholder="Introduce tu correo electrónico" required />
-            <div class="cameras-question">¿Qué cámaras quieres recibir?</div>
-            <div class="options">
-              <label>Ciudades<input type="checkbox" name="options" value="Ciudades"></label>
-              <label>Playas<input type="checkbox" name="options" value="Playas"></label>
-              <label>Deportes<input type="checkbox" name="options" value="Deportes"></label>
-              <label>Aeropuertos<input type="checkbox" name="options" value="Aeropuertos"></label>
-              <label>Montaña<input type="checkbox" name="options" value="Montaña"></label>
-            </div>
-
-            <div class="terms-container">
-              <input type="checkbox" id="terms-check" required>
-              <label for="terms-check">
-                Acepto los <a href="https://canariaslife.com/es/declaracion-de-privacidad/" target="_blank">términos y condiciones</a>
-              </label>
-            </div>
-
-            <div id="message-box" class="message-box"></div>
-
-            <button type="submit">Enviar</button>
-          </form>
-        </div>
+  <div id="canarias-popup">
+    <div class="popup-content">
+      <h2>ASÓMATE A LA VENTANA DE CANARIAS</h2>
+      <p>Mantente al día con tus cámaras favoritas y recibe un aviso todas las semanas</p>
+      <div class="blue-box">
+        <form id="canarias-form">
+          <input type="email" id="email" name="email" placeholder="Introduce tu correo electrónico" required />
+          <div class="cameras-question">¿Qué cámaras quieres recibir?</div>
+          <div class="options" id="options-container">
+            <label><input type="checkbox" name="options" value="Ciudades">Ciudades</label>
+            <label><input type="checkbox" name="options" value="Playas">Playas</label>
+            <label><input type="checkbox" name="options" value="Deportes">Deportes</label>
+            <label><input type="checkbox" name="options" value="Aeropuertos">Aeropuertos</label>
+            <label><input type="checkbox" name="options" value="Montaña">Montaña</label>
+          </div>
+          <div class="terms-container">
+            <input type="checkbox" id="terms-check" required>
+            <label for="terms-check">
+              Acepto los <a href="https://canariaslife.com/es/declaracion-de-privacidad/" target="_blank">términos y condiciones</a>
+            </label>
+          </div>
+          <div id="message-box" class="message-box"></div>
+          <button type="submit">Enviar</button>
+        </form>
       </div>
+      <div class="canarias-logo">
+        <img src="canariasLife.png" alt="Canarias Life">
     </div>
+      
+    </div>
+  </div>
 
-    <script>
-      function showMessage(message, type) {
-        const messageBox = document.getElementById('message-box');
-        messageBox.textContent = message;
-        messageBox.className = `message-box ${type}`;
-        messageBox.style.display = 'block';
+  <script>
+    document.getElementById('canarias-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const termsCheck = document.getElementById('terms-check');
+      const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                                  .map(option => option.value);
+
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+          showMessage('Por favor, introduce un email con un formato válido.', 'error-message');
+          return;
       }
 
-      document.getElementById('canarias-form').addEventListener('submit', function (e) {
-        e.preventDefault();
+      if (!termsCheck.checked) {
+          showMessage('Debes aceptar los términos y condiciones para continuar.', 'error-message');
+          return;
+      }
 
-        const email = document.getElementById('email').value;
-        const termsCheck = document.getElementById('terms-check');
-        const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
-                                    .map(option => option.value);
-        const submitButton = document.querySelector('#canarias-form button');
+      if (selectedOptions.length === 0) {
+          showMessage('Selecciona al menos una opción.', 'error-message');
+          return;
+      }
 
-        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailRegex.test(email)) {
-            showMessage('Por favor, introduce un email con un formato válido.', 'error-message');
-            return;
-        }
-
-        if (!termsCheck.checked) {
-            showMessage('Debes aceptar los términos y condiciones para continuar.', 'error-message');
-            return;
-        }
-
-        if (selectedOptions.length === 0) {
-            showMessage('Selecciona al menos una opción.', 'error-message');
-            return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = 'Verificando...';
-
-        fetch('http://localhost:3000/api/check-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email, interests: selectedOptions })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                showMessage(`¡Suscripción realizada!`, 'success-message');
-            } else {
-                showMessage('No puedes suscribirte a los mismos intereses.', 'error-message');
-            }
-            submitButton.disabled = false;
-            submitButton.textContent = 'Enviar';
-        });
+      fetch('http://localhost:3000/api/check-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, interests: selectedOptions })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.registeredInterests.length > 0) {
+              showMessage('Algunas opciones ya están suscritas. Selecciona otras.', 'info-message');
+              data.registeredInterests.forEach(interes => {
+                  const checkbox = document.querySelector(`input[name="options"][value="${interes}"]`);
+                  if (checkbox) {
+                      checkbox.disabled = true;
+                      checkbox.parentElement.classList.add('disabled-option');
+                      checkbox.parentElement.innerHTML += " <span>(Ya suscrito)</span>";
+                  }
+              });
+          } else {
+              showMessage('¡Suscripción realizada con éxito!', 'success-message');
+          }
       });
+    });
 
-      function openPopup() {
-        document.getElementById('canarias-popup').style.display = 'flex';
-      }
-    </script>
+    function showMessage(message, type) {
+      const messageBox = document.getElementById('message-box');
+      messageBox.textContent = message;
+      messageBox.className = `message-box ${type}`;
+      messageBox.style.display = 'block';
+    }
+
+    function openPopup() {
+      document.getElementById('canarias-popup').style.display = 'flex';
+    }
+  </script>
 </body>
 </html>
