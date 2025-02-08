@@ -129,6 +129,39 @@
   width: 150px;
 }
 
+/* Estilos generales para los mensajes */
+.message-box {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  display: none; /* Oculto por defecto */
+}
+
+/* Estilo para mensajes de éxito */
+.success-message {
+  background-color: #d4edda; /* Verde claro */
+  color: #155724; /* Verde oscuro */
+  border: 2px solid #c3e6cb;
+}
+
+/* Estilo para mensajes de información (ahora en rojo en lugar de azul) */
+.info-message {
+  background-color: #f8d7da; /* Rojo claro */
+  color: #721c24; /* Rojo oscuro */
+  border: 2px solid #f5c6cb;
+}
+
+/* Estilo para mensajes de error */
+.error-message {
+  background-color: #f8d7da; /* Rojo claro */
+  color: #721c24; /* Rojo oscuro */
+  border: 2px solid #f5c6cb;
+}
+
+
   </style>
 </head>
 <body>
@@ -169,51 +202,62 @@
 
   <script>
     document.getElementById('canarias-form').addEventListener('submit', function (e) {
-      e.preventDefault();
+    e.preventDefault();
 
-      const email = document.getElementById('email').value;
-      const termsCheck = document.getElementById('terms-check');
-      const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
-                                  .map(option => option.value);
+    const email = document.getElementById('email').value;
+    const termsCheck = document.getElementById('terms-check');
+    const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                                .map(option => option.value);
 
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(email)) {
-          showMessage('Por favor, introduce un email con un formato válido.', 'error-message');
-          return;
-      }
+    if (!email) {
+        showMessage('Por favor, introduce un email válido.', 'error-message');
+        return;
+    }
 
-      if (!termsCheck.checked) {
-          showMessage('Debes aceptar los términos y condiciones para continuar.', 'error-message');
-          return;
-      }
+    if (!termsCheck.checked) {
+        showMessage('Debes aceptar los términos y condiciones para continuar.', 'error-message');
+        return;
+    }
 
-      if (selectedOptions.length === 0) {
-          showMessage('Selecciona al menos una opción.', 'error-message');
-          return;
-      }
+    if (selectedOptions.length === 0) {
+        showMessage('Selecciona al menos una opción.', 'error-message');
+        return;
+    }
 
-      fetch('http://localhost:3000/api/check-email', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email, interests: selectedOptions })
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.registeredInterests.length > 0) {
-              showMessage('Algunas opciones ya están suscritas. Selecciona otras.', 'info-message');
-              data.registeredInterests.forEach(interes => {
-                  const checkbox = document.querySelector(`input[name="options"][value="${interes}"]`);
-                  if (checkbox) {
-                      checkbox.disabled = true;
-                      checkbox.parentElement.classList.add('disabled-option');
-                      checkbox.parentElement.innerHTML += " <span>(Ya suscrito)</span>";
-                  }
-              });
-          } else {
-              showMessage('¡Suscripción realizada con éxito!', 'success-message');
-          }
-      });
+    fetch('http://localhost:3000/api/check-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, interests: selectedOptions })
+    })
+    .then(response => response.json())
+    .then(data => {
+        document.querySelectorAll('.options label span').forEach(span => span.remove());
+
+        if (data.success) {
+            showMessage('¡Suscripción realizada con éxito!', 'success-message');
+        } else if (data.registeredInterests.length > 0) {
+            showMessage('Algunas opciones ya están suscritas. Selecciona otras.', 'info-message');
+        } else {
+            showMessage('Hubo un error inesperado.', 'error-message');
+        }
+
+        // Marcar intereses ya suscritos
+        data.registeredInterests.forEach(interes => {
+            const checkbox = document.querySelector(`input[name="options"][value="${interes}"]`);
+            if (checkbox && !checkbox.parentElement.innerHTML.includes("(Ya suscrito)")) {
+                const span = document.createElement("span");
+                span.textContent = " (Ya suscrito)";
+                checkbox.parentElement.appendChild(span);
+                checkbox.disabled = true;
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        showMessage('No se pudo conectar con el servidor. Inténtalo más tarde.', 'error-message');
     });
+});
+
 
     function showMessage(message, type) {
       const messageBox = document.getElementById('message-box');
