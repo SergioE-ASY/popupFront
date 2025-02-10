@@ -166,7 +166,7 @@
 </head>
 <body>
 
-  <button id="open-popup-btn" onclick="openPopup()">Forzar Popup</button>
+  <button id="open-popup-btn" onclick="openPopup()">Me quiero suscribir</button>
 
   <div id="canarias-popup">
     <div class="popup-content">
@@ -201,7 +201,7 @@
   </div>
 
   <script>
-    document.getElementById('canarias-form').addEventListener('submit', function (e) {
+   document.getElementById('canarias-form').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const email = document.getElementById('email').value;
@@ -235,6 +235,8 @@
 
         if (data.success) {
             showMessage('¡Suscripción realizada con éxito!', 'success-message');
+        } else if (data.message === "Estás suscrito a todas nuestras cámaras.") {
+            showMessage('Estás suscrito a todas nuestras cámaras.', 'info-message');
         } else if (data.registeredInterests.length > 0) {
             showMessage('Algunas opciones ya están suscritas. Selecciona otras.', 'info-message');
         } else {
@@ -258,17 +260,17 @@
     });
 });
 
+function showMessage(message, type) {
+    const messageBox = document.getElementById('message-box');
+    messageBox.textContent = message;
+    messageBox.className = `message-box ${type}`;
+    messageBox.style.display = 'block';
+}
 
-    function showMessage(message, type) {
-      const messageBox = document.getElementById('message-box');
-      messageBox.textContent = message;
-      messageBox.className = `message-box ${type}`;
-      messageBox.style.display = 'block';
-    }
+function openPopup() {
+    document.getElementById('canarias-popup').style.display = 'flex';
+}
 
-    function openPopup() {
-      document.getElementById('canarias-popup').style.display = 'flex';
-    }
   </script>
 </body>
 </html>
