@@ -1,6 +1,6 @@
 <?php
 /**
- * Functions file para tu Child Theme
+ * Funciones del tema hijo para el Popup Canarias
  */
 
 // Evitar ejecución directa
@@ -8,11 +8,11 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Inserta el popup al final del <body> (en el footer)
+// Insertar el popup en el footer de WordPress
 add_action('wp_footer', function() {
     ?>
     <style>
-        /* Estilos del popup */
+        /* Estilos generales */
         #canarias-popup {
             display: none;
             position: fixed;
@@ -26,8 +26,10 @@ add_action('wp_footer', function() {
             align-items: center;
             font-family: Arial, sans-serif;
         }
+
         #canarias-popup .popup-content {
             background: white;
+            color: black;
             padding: 20px;
             border-radius: 10px;
             max-width: 500px;
@@ -35,12 +37,14 @@ add_action('wp_footer', function() {
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+
         .blue-box {
-            background: #00AEEF;
+            background: #008CDE;
             padding: 20px;
             border-radius: 10px;
-            margin-bottom: 20px;
+            margin-top: 15px;
         }
+
         #canarias-popup input[type="email"] {
             width: 90%;
             padding: 12px;
@@ -49,25 +53,30 @@ add_action('wp_footer', function() {
             font-size: 16px;
             text-align: center;
         }
+
         .cameras-question {
             font-size: 18px;
             font-weight: bold;
             margin: 15px 0;
             color: white;
         }
+
         .options {
             display: flex;
-            justify-content: space-around;
-            margin-bottom: 20px;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
+
         .options label {
             display: flex;
             flex-direction: column;
             align-items: center;
-            cursor: pointer;
             color: white;
-            font-size: 14px;
+            font-size: 16px;
+            cursor: pointer;
         }
+
         .options input[type="checkbox"] {
             appearance: none;
             width: 22px;
@@ -78,19 +87,23 @@ add_action('wp_footer', function() {
             cursor: pointer;
             position: relative;
         }
+
         .options input[type="checkbox"]:checked {
-            background: #FFA500;
+            background-color: #FFA500;
             border-color: #FFA500;
         }
+
         .terms-container {
-            margin-bottom: 20px;
-            text-align: left;
+            font-size: 14px;
+            margin-top: 10px;
             color: white;
         }
+
         .terms-container a {
             color: #FFA500;
             text-decoration: underline;
         }
+
         #canarias-popup button {
             background: #FFA500;
             color: white;
@@ -101,34 +114,49 @@ add_action('wp_footer', function() {
             cursor: pointer;
             margin-top: 15px;
         }
+
         #canarias-popup button:hover {
             background: #FF8C00;
         }
-        .logo-container {
+
+        .canarias-logo {
+            margin-top: 20px;
+        }
+
+        .canarias-logo img {
+            width: 150px;
+        }
+
+        .message-box {
             margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
         }
-        .logo-container img {
-            max-width: 200px;
-            height: auto;
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
         }
-        #open-popup-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #FFA500;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            z-index: 10000;
+
+        .info-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
         }
-        #open-popup-btn:hover {
-            background: #FF8C00;
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
         }
     </style>
 
-    <button id="open-popup-btn" onclick="openPopup()">Forzar Popup</button>
+    <button id="open-popup-btn" onclick="openPopup()">Me quiero suscribir</button>
 
     <div id="canarias-popup">
         <div class="popup-content">
@@ -138,95 +166,87 @@ add_action('wp_footer', function() {
                 <form id="canarias-form">
                     <input type="email" id="email" name="email" placeholder="Introduce tu correo electrónico" required />
                     <div class="cameras-question">¿Qué cámaras quieres recibir?</div>
-                    <div class="options">
-                        <label>Ciudades <input type="checkbox" name="options" value="Ciudades"></label>
-                        <label>Playas <input type="checkbox" name="options" value="Playas"></label>
-                        <label>Deportes <input type="checkbox" name="options" value="Deportes"></label>
-                        <label>Aeropuertos <input type="checkbox" name="options" value="Aeropuertos"></label>
+                    <div class="options" id="options-container">
+                        <label><input type="checkbox" name="options" value="Ciudades">Ciudades</label>
+                        <label><input type="checkbox" name="options" value="Playas">Playas</label>
+                        <label><input type="checkbox" name="options" value="Deportes">Deportes</label>
+                        <label><input type="checkbox" name="options" value="Aeropuertos">Aeropuertos</label>
+                        <label><input type="checkbox" name="options" value="Montaña">Montaña</label>
                     </div>
                     <div class="terms-container">
+                        <input type="checkbox" id="terms-check" required>
                         <label for="terms-check">
-                            <input type="checkbox" id="terms-check" name="terms-check">
-                            Estoy de acuerdo con los 
-                            <a href="https://canariaslife.com/es/declaracion-de-privacidad/" target="_blank">Términos y Condiciones</a>
+                            Acepto los <a href="https://canariaslife.com/es/declaracion-de-privacidad/" target="_blank">términos y condiciones</a>
                         </label>
                     </div>
+                    <div id="message-box" class="message-box"></div>
                     <button type="submit">Enviar</button>
                 </form>
             </div>
+
             <div class="logo-container">
-                <img src="https://simply.e-asy.es/wp-content/uploads/2025/01/Captura-de-pantalla-2025-01-28-092001.png" alt="Canarias Life Logo" />
+                <!-- Ruta en producción (descomentar para producción) -->
+                <!-- <img src="https://simply.e-asy.es/wp-content/uploads/2025/01/Captura-de-pantalla-2025-01-28-092001.png" alt="Canarias Life Logo"> -->
+
+                <!-- Ruta local por defecto -->
+                <img src="<?php echo get_template_directory_uri(); ?>/canariasLife.png" alt="Canarias Life">
             </div>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let formularioEnviado = false;
-            document.getElementById('canarias-popup').style.display = 'flex';
+        document.getElementById('canarias-form').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-            document.getElementById('canarias-form').addEventListener('submit', function (e) {
-                e.preventDefault();
-                if (formularioEnviado) {
-                    alert('Ya has enviado el formulario. Por favor, espera.');
-                    return;
-                }
+            const email = document.getElementById('email').value;
+            const termsCheck = document.getElementById('terms-check');
+            const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
+                                        .map(option => option.value);
 
-                const email = document.getElementById('email').value;
-                const termsCheck = document.getElementById('terms-check');
-                const selectedOptions = Array.from(document.querySelectorAll('input[name="options"]:checked'))
-                                            .map(option => option.value);
-                const submitButton = document.querySelector('#canarias-form button');
-
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                if (!emailRegex.test(email)) {
-                    alert('Por favor, introduce un email válido.');
-                    return;
-                }
-
-                if (!termsCheck.checked) {
-                    alert('Debes aceptar los Términos y Condiciones.');
-                    return;
-                }
-
-                if (selectedOptions.length === 0) {
-                    alert('Selecciona al menos una opción.');
-                    return;
-                }
-
-                formularioEnviado = true;
-                submitButton.disabled = true;
-                submitButton.textContent = 'Enviando...';
-
-                fetch('https://hook.eu1.make.com/tp2b67rhd4enrjrtw3u54quwg2tpk3af', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, selections: selectedOptions }),
-                })
-                .then(response => {
-                    if (response.ok) {
-                        alert('¡Gracias por suscribirte!');
-                        document.getElementById('canarias-popup').style.display = 'none';
-                    } else {
-                        alert('Error al procesar tu suscripción. Intenta nuevamente.');
-                        formularioEnviado = false;
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Enviar';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('No se pudo conectar con el servidor. Intenta más tarde.');
-                    formularioEnviado = false;
-                    submitButton.disabled = false;
-                    submitButton.textContent = 'Enviar';
-                });
-            });
-
-            function openPopup() {
-                document.getElementById('canarias-popup').style.display = 'flex';
+            if (!email) {
+                showMessage('Por favor, introduce un email válido.', 'error-message');
+                return;
             }
+
+            if (!termsCheck.checked) {
+                showMessage('Debes aceptar los términos y condiciones para continuar.', 'error-message');
+                return;
+            }
+
+            if (selectedOptions.length === 0) {
+                showMessage('Selecciona al menos una opción.', 'error-message');
+                return;
+            }
+
+            fetch('<?php echo site_url(); ?>/wp-json/custom/v1/check-email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, interests: selectedOptions })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showMessage('¡Suscripción realizada con éxito!', 'success-message');
+                } else {
+                    showMessage(data.message, 'info-message');
+                }
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+                showMessage('No se pudo conectar con el servidor. Inténtalo más tarde.', 'error-message');
+            });
         });
+
+        function showMessage(message, type) {
+            const messageBox = document.getElementById('message-box');
+            messageBox.textContent = message;
+            messageBox.className = `message-box ${type}`;
+            messageBox.style.display = 'block';
+        }
+
+        function openPopup() {
+            document.getElementById('canarias-popup').style.display = 'flex';
+        }
     </script>
     <?php
 });
